@@ -1,14 +1,18 @@
 import React from 'react'
+import { useContext } from 'react'
+import AnimeContext  from './Context/animeContext'
 
-export const AnimeList = ({ animelist,setAnimeInfo,animeComponent,handleList}) => {
-  const AddToList=animeComponent;
+const AnimeList = ({animes, animeComponent, handleList}) => {
+  const { setAnimeInfo } = useContext(AnimeContext);
+  const Component = animeComponent;
   return (
     <>
       {
-        animelist ? (
-          animelist.map((anime, index) => {
+        animes ? (
+          animes.map((anime, index) => {
             return (
-              <div className="card" key={index} onClick={()=>setAnimeInfo(anime)}>
+              <>
+              <div className="mycard" key={index} onClick={()=>setAnimeInfo(anime)}>
                 <img src={anime.images.jpg.large_image_url} alt="animeImage" />
                 <div className="anime-info">
                   <h4>{anime.title}</h4>
@@ -18,11 +22,12 @@ export const AnimeList = ({ animelist,setAnimeInfo,animeComponent,handleList}) =
                       <div className="synopsis">
                         <p>{anime.synopsis}</p>
                       </div>
-                      <AddToList/>
+                      <Component/>
                   </div>
 
                 </div>
               </div>
+            </>
             )
           })
         ) : "Not Found"
@@ -31,3 +36,5 @@ export const AnimeList = ({ animelist,setAnimeInfo,animeComponent,handleList}) =
     </>
   )
 }
+
+export default AnimeList;

@@ -1,7 +1,10 @@
 import React from 'react'
+import { useContext } from 'react'
+import AnimeContext from './Context/animeContext' 
 
-export const AnimeInfo = (props) => {
-    const {title,images:{jpg:{large_image_url}},source,rank,score,popularity,members,status,rating,duration}=props.animeInfo
+const AnimeInfo = () => {
+  const { animeInfo } = useContext(AnimeContext); 
+    const {title,images:{jpg:{large_image_url}},source,rank,score,popularity,members,status,rating,duration}=animeInfo;
   return (
     <>
         <div className="anime-content">
@@ -21,3 +24,5 @@ export const AnimeInfo = (props) => {
     </>
   )
 }
+
+export default AnimeInfo;

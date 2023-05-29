@@ -1,74 +1,18 @@
-import React, { useEffect, useState } from "react";
-import './Components/style.css';
-import { AnimeList } from "./Components/AnimeList";
-import { AnimeInfo } from "./Components/AnimeInfo";
-import { AddToList } from "./Components/AddToList";
-import { RemoveFromList } from "./Components/RemoveFromList";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import "./Components/style.css";
+import Navbar from "./Components/Navbar";
+import SearchAnime from "./Components/SearchAnime";
+import Mylist from "./Components/Mylist";
 function App() {
-
-  const [search,setSearch]=useState('dragon ball')
-  const [animeData,setAnimeData]=useState();
-  const [animeInfo,setAnimeInfo]=useState()
-  const [myAnimeList,setMyAnimeList]=useState([])
-
-  const handleAddToList=(anime)=>{
-    const index=myAnimeList.findIndex((newanime)=>{
-      return newanime.mal_id===anime.mal_id;
-    })
-    if (index<0) {
-      setMyAnimeList([...myAnimeList,anime]);
-    }
-  }
-  const handleRemoveFromList=(anime)=>{
-    const newArray=myAnimeList.filter((myanime)=>{
-      return myanime.mal_id !== anime.mal_id
-    })
-    setMyAnimeList(newArray)
-  }
-  const getData=async()=>{
-      const res=await fetch(`https://api.jikan.moe/v4/anime?q=${search}&limit=20`)
-      const resData= await res.json();
-      setAnimeData(resData.data)
-  }
-  useEffect(()=>{
-    getData()
-  },[search])
 
   return (
     <>
-        <div className="header">
-          <h1>MyAnimeList</h1>
-          <div className="search-box">
-              <input type="search" placeholder="Search your anime" 
-              onChange={(e)=>setSearch(e.target.value)}/>
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="animeInfo">
-           {animeInfo && <AnimeInfo animeInfo={animeInfo}/>}
-          </div>
-          <div className="anime-row">
-            <h2 className="text-heading">Anime</h2>
-            <div className="row">
-                <AnimeList 
-                animelist={animeData}
-                setAnimeInfo={setAnimeInfo}
-                animeComponent={AddToList}
-                handleList={(anime)=>handleAddToList(anime)}
-                />
-            </div>
-            <h2 className="text-heading">My List</h2>
-            <div className="row">
-                <AnimeList 
-                animelist={myAnimeList}
-                setAnimeInfo={setAnimeInfo}
-                animeComponent={RemoveFromList}
-                handleList={(anime)=>handleRemoveFromList(anime)}
-                />
-            </div>
-          </div>
-        </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<SearchAnime/>} />
+        <Route path="/mylist" element={<Mylist/>} />
+      </Routes>
     </>
   );
 }
